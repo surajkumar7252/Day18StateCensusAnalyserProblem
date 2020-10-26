@@ -98,6 +98,37 @@ public class StateCensusAnalyser
 			}
 		   
 		}
+	 
+	 public void sortingDataByStateCode(List<CSVStates> csvStateList, Comparator<CSVStates> censusComparator) {
+			int i=0;
+			while(i<csvStateList.size()-1) {
+				int j=0;
+			  while( j<csvStateList.size()-i-1) {
+					CSVStates tempData1=csvStateList.get(j);
+					CSVStates tempData2=csvStateList.get(j+1);
+					if(censusComparator.compare(tempData1, tempData2)>0) {
+						csvStateList.set(j+1, tempData1);
+						csvStateList.set(j, tempData2);
+						
+					}j++;
+				}i++;
+			}
+		}
+	 
+	 public String sortedCensusPerStateByStateCode(String csvFilePath, TypeOfCsvBuilder typeOfCsvBuilder) throws CensusException, CsvException {
+			try (Reader fileReader = Files.newBufferedReader(Paths.get(csvFilePath));) {
+				    ICsvCreator csvCreator = (typeOfCsvBuilder==TypeOfCsvBuilder.OPEN_CSV?CsvBuilderFactory.createBuilderEntry():CsvBuilderFactory.createCommonBuilder());
+					List<CSVStates>csvStateCensusList = csvCreator.getCSVList(fileReader, CSVStates.class);
+				Function<CSVStates, String> key=census->census.stateCode;
+				Comparator<CSVStates> comparator=Comparator.comparing(key);
+				sortingDataByStateCode(csvStateCensusList, comparator);
+				String sortedJsonCensus=new Gson().toJson(csvStateCensusList);
+				return sortedJsonCensus;
+			} catch (IOException e) {
+				throw new CsvException("File Error", typeOfCsvException.FILE_ERROR);
+			}
+		   
+		}
 	
 }
 
