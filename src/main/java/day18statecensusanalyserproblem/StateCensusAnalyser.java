@@ -58,6 +58,45 @@ public class StateCensusAnalyser
 				e.printStackTrace();
 				throw new RuntimeException();
 			}
-		}
+		   }
+		   
 	}
+	public int stateCodeReader(String csvFilePath) throws CensusException {
+		try (Reader fileReader = Files.newBufferedReader(Paths.get(csvFilePath))) {
+			
+			CsvToBeanBuilder<CSVStates> csvFileToBeanBuilder = new CsvToBeanBuilder<>(fileReader);
+			csvFileToBeanBuilder.withType(CSVStates.class);
+			csvFileToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
+			
+			CsvToBean<CSVStates> csvFileToBeanFile = csvFileToBeanBuilder.build();
+			 Iterator<CSVStates> censusCsvIterator = csvFileToBeanFile.iterator();
+			Iterable<CSVStates> csvIterableObject = () ->  censusCsvIterator;
+			
+			int entryCounter = (int) StreamSupport.stream(csvIterableObject.spliterator(), false).count();
+			return entryCounter;
+		   } catch (IOException a) {
+			throw new CensusException("CSV File is not Correct", CensusExceptionType.FILE_ERROR);
+		   } catch (RuntimeException a) {
+			if (ExceptionUtils.indexOfType(a, CsvDataTypeMismatchException.class) != -1) {
+				throw new CensusException("Type is inconsistent. Please check", CensusExceptionType.TYPE_ERROR);
+			   } 
+			else if (ExceptionUtils.indexOfType(a, CsvRequiredFieldEmptyException.class) != -1) {
+				if(a.getMessage().equals("CSV header couldn't get caught.Please check")) {
+					throw new CensusException("Header error", CensusExceptionType.HEADER_ERROR);
+				  }
+				else {
+					throw new CensusException("Delimiter is not consistent",
+						CensusExceptionType.DELIMITER_ERROR);
+				   }
+			  } 
+			 else {
+				a.printStackTrace();
+				throw new RuntimeException();
+			}
+		   }
+	
+		   
+    }
 }
+	
+	
