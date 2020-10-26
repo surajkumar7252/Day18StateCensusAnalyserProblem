@@ -129,6 +129,34 @@ public class StateCensusAnalyser
 			}
 		   
 		}
+	 
+	 public void sortingPopulationData(List<CSVStateCensus> csvCensusList, Comparator<CSVStateCensus> censusComparator) {
+			int i=0;
+			while(i<csvCensusList.size()-1) {
+				int j=0;
+			  while( j<csvCensusList.size()-i-1) {
+					CSVStateCensus tempData1=csvCensusList.get(j);
+					CSVStateCensus tempData2=csvCensusList.get(j+1);
+					if(censusComparator.compare(tempData1, tempData2)<0) {
+						
+						csvCensusList.set(j, tempData2);
+						csvCensusList.set(j+1, tempData1);
+						
+					}j++;
+				}i++;
+			}
+		}
+	 
+	public String sortedPopulationData(String filePath) throws IOException {
+			FileWriter fileWriter = new FileWriter(filePath);
+			List<CSVStateCensus>csvStateCensusList = null ;
+			Comparator<CSVStateCensus> comparator = Comparator.comparing(census -> census.population);
+			this.sortingPopulationData(csvStateCensusList,comparator);
+			String sortedStateCensus = new Gson().toJson(csvStateCensusList);
+			fileWriter.write(sortedStateCensus);
+			fileWriter.close();
+			return sortedStateCensus;
+		}
 	
 }
 
