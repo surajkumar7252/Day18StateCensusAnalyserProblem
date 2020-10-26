@@ -130,7 +130,7 @@ public class StateCensusAnalyser
 		   
 		}
 	 
-	 public void sortingPopulationData(List<CSVStateCensus> csvCensusList, Comparator<CSVStateCensus> censusComparator) {
+	 public void sortingPopulationDataDescending(List<CSVStateCensus> csvCensusList, Comparator<CSVStateCensus> censusComparator) {
 			int i=0;
 			while(i<csvCensusList.size()-1) {
 				int j=0;
@@ -147,17 +147,46 @@ public class StateCensusAnalyser
 			}
 		}
 	 
-	public String sortedPopulationData(String filePath) throws IOException {
+	 public void sortingPopulationDataAscending(List<CSVStateCensus> csvCensusList, Comparator<CSVStateCensus> censusComparator) {
+			int i=0;
+			while(i<csvCensusList.size()-1) {
+				int j=0;
+			  while( j<csvCensusList.size()-i-1) {
+					CSVStateCensus tempData1=csvCensusList.get(j);
+					CSVStateCensus tempData2=csvCensusList.get(j+1);
+					if(censusComparator.compare(tempData1, tempData2)>0) {
+						
+						
+						csvCensusList.set(j+1, tempData1);
+						csvCensusList.set(j, tempData2);
+						
+					}j++;
+				}i++;
+			}
+		}
+	 
+	public String sortedPopulationDataDescending(String filePath) throws IOException {
 			FileWriter fileWriter = new FileWriter(filePath);
 			List<CSVStateCensus>csvStateCensusList = null ;
 			Comparator<CSVStateCensus> comparator = Comparator.comparing(census -> census.population);
-			this.sortingPopulationData(csvStateCensusList,comparator);
+			this.sortingPopulationDataDescending(csvStateCensusList,comparator);
 			String sortedStateCensus = new Gson().toJson(csvStateCensusList);
 			fileWriter.write(sortedStateCensus);
 			fileWriter.close();
 			return sortedStateCensus;
 		}
 	
+	
+	public String sortedPopulationDataAscending(String filePath) throws IOException {
+		FileWriter fileWriter = new FileWriter(filePath);
+		List<CSVStateCensus>csvStateCensusList = null ;
+		Comparator<CSVStateCensus> comparator = Comparator.comparing(census -> census.population);
+		this.sortingPopulationDataAscending(csvStateCensusList,comparator);
+		String sortedStateCensus = new Gson().toJson(csvStateCensusList);
+		fileWriter.write(sortedStateCensus);
+		fileWriter.close();
+		return sortedStateCensus;
+	}
 }
 
 	
