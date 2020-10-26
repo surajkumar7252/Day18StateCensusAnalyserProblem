@@ -19,7 +19,13 @@ public class StateCensusAnalyserTest
 	public void whenFedIndiaCensusDetailsCsv_shouldReturnTheNumberOfDetailCounts() {
 		StateCensusAnalyser stateAnalyser = new StateCensusAnalyser();
 		try {
-			int counter = stateAnalyser.stateCensusReader(CENSUS_CSV_CORRECT);
+			int counter=0;
+			try {
+				counter = stateAnalyser.stateCensusReader(CENSUS_CSV_CORRECT, TypeOfCsvBuilder.OPEN_CSV);
+			} catch (CsvException e) {
+				
+				e.printStackTrace();
+			}
 			Assert.assertEquals(20, counter);
 		} catch (CensusException e) {
 			e.printStackTrace();
@@ -34,7 +40,12 @@ public class StateCensusAnalyserTest
 			StateCensusAnalyser stateAnalyser=new StateCensusAnalyser();
 			ExpectedException expectedException= ExpectedException.none();
 			expectedException.expect(CensusException.class);
-			stateAnalyser.stateCensusReader(CENSUS_CSV_ERROR);
+			try {
+				stateAnalyser.stateCensusReader(CENSUS_CSV_ERROR, TypeOfCsvBuilder.OPEN_CSV);
+			} catch (CsvException e) {
+				
+				e.printStackTrace();
+			}
 		}catch(CensusException e) {
 			Assert.assertEquals(CensusExceptionType.TYPE_ERROR, e.foundExceptionType);
 		}
@@ -47,7 +58,12 @@ public class StateCensusAnalyserTest
 			StateCensusAnalyser stateAnalyser=new StateCensusAnalyser();
 			ExpectedException expectedException= ExpectedException.none();
 			expectedException.expect(CensusException.class);
-			stateAnalyser.stateCensusReader(CENSUS_CSV_TYPE_ERROR);
+			try {
+				stateAnalyser.stateCensusReader(CENSUS_CSV_TYPE_ERROR, TypeOfCsvBuilder.OPEN_CSV);
+			} catch (CsvException e) {
+				
+				e.printStackTrace();
+			}
 		}catch(CensusException e) {
 			Assert.assertEquals(CensusExceptionType.TYPE_ERROR, e.foundExceptionType);
 		}
@@ -60,7 +76,12 @@ public class StateCensusAnalyserTest
 			StateCensusAnalyser stateAnalyser=new StateCensusAnalyser();
 			ExpectedException expectedException= ExpectedException.none();
 			expectedException.expect(CensusException.class);
-			stateAnalyser.stateCensusReader(DELIMITER_ERROR);
+			try {
+				stateAnalyser.stateCensusReader(DELIMITER_ERROR, TypeOfCsvBuilder.OPEN_CSV);
+			} catch (CsvException e) {
+				
+				e.printStackTrace();
+			}
 		}catch(CensusException e) {
 			Assert.assertEquals(CensusExceptionType.DELIMITER_ERROR, e.foundExceptionType);
 		}
@@ -73,7 +94,12 @@ public class StateCensusAnalyserTest
 			StateCensusAnalyser stateAnalyser=new StateCensusAnalyser();
 			ExpectedException expectedException= ExpectedException.none();
 			expectedException.expect(CensusException.class);
-			stateAnalyser.stateCensusReader(HEADER_ERROR);
+			try {
+				stateAnalyser.stateCensusReader(HEADER_ERROR, TypeOfCsvBuilder.OPEN_CSV);
+			} catch (CsvException e) {
+				
+				e.printStackTrace();
+			}
 		}catch(CensusException e) {
 			Assert.assertEquals(CensusExceptionType.HEADER_ERROR, e.foundExceptionType);
 		}
