@@ -12,17 +12,9 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-interface ICsvCreator {
-	public <T> Iterator<T> csvIterator(Reader reader, Class<T>bindClass) throws CensusException;
-	public <T> List<T>  getCSVList(Reader reader, Class<T> bindClass) throws CensusException;
-}
 
-    class CsvBuilderFactory {
-	public static ICsvCreator createBuilderEntry() {
-		return new OpenCsvBuilder();
-	}
-	
-   }
+
+    
 
 public class OpenCsvBuilder implements ICsvCreator {
 	

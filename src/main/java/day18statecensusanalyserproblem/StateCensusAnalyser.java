@@ -21,6 +21,18 @@ final class CensusException extends Exception{
 	}
 }
 
+ enum typeOfCsvException {
+	PARSING_ERROR, FILE_ERROR, TYPE_ERROR, DELIMITER_ERROR, HEADER_ERROR
+}
+
+
+final class CsvException extends Exception {	
+	   typeOfCsvException typeOfException;
+	public CsvException(String message, typeOfCsvException exceptionType) {
+		
+		this.typeOfException=exceptionType;
+	}
+}
 
 
 
