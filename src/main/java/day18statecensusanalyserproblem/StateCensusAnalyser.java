@@ -10,7 +10,7 @@ import com.opencsv.exceptions.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 enum CensusExceptionType{
-	FILE_ERROR, TYPE_ERROR, DELIMITER_ERROR, HEADER_ERROR
+	FILE_ERROR, TYPE_ERROR, DELIMITER_ERROR, HEADER_ERROR,PARSING_ERROR
 }
 
 final class CensusException extends Exception{	
@@ -95,19 +95,9 @@ public class StateCensusAnalyser
 			}
 		   }
 	}
-		public <E> Long counterFunction(Iterator<E> countIterator) {
-			Iterable<E> csvFileIterable = () ->countIterator;
-			System.out.println("Counter Runs");
-			Long counter = (Long) StreamSupport.stream(csvFileIterable.spliterator(), false).count();
-			return counter;
-		}
 		
-		public <E> Iterator<E> fileIterator(Reader reader){
-			CsvToBeanBuilder<E> csvToBeanMaker = new CsvToBeanBuilder<>(reader);
-			CsvToBean<E> csvToBean = csvToBeanMaker.build();
-			return csvToBean.iterator();
-		}
-		   
+		
+		
     }
 
 	
