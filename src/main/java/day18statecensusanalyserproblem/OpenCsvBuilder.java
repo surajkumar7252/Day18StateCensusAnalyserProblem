@@ -17,6 +17,13 @@ interface ICsvCreator {
 	public <T> List<T>  getCSVList(Reader reader, Class<T> bindClass) throws CensusException;
 }
 
+    class CsvBuilderFactory {
+	public static ICsvCreator createBuilderEntry() {
+		return new OpenCsvBuilder();
+	}
+	
+   }
+
 public class OpenCsvBuilder implements ICsvCreator {
 	
 	private <T> CsvToBean<T> csvToBean(Reader reader, Class<T> csvBindedClass) throws RuntimeException {
